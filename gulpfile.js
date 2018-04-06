@@ -35,7 +35,7 @@ var styleSrc = 'source/sass/**/*.sass',
 // Compiles all SASS files
 gulp.task('sass', function() {
     gulp.src('source/sass/**/*.sass')
-
+        .pipe(plumber())
         .pipe(sass({
             style: 'compressed'
         }))
