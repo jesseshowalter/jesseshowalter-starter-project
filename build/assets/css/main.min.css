@@ -184,11 +184,13 @@ th {
 html {
   box-sizing: border-box; }
 
-* *:before *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit; }
 
 body {
-  background-color: white;
+  background: rgba(0, 0, 0, 0.9) url("../img/ep_naturalblack.png");
   font-size: 14px;
   line-height: 1.6;
   font-size: 14px;
@@ -241,11 +243,11 @@ input[type="button"] {
     transform: translateY(3px); }
 
 a {
-  color: #7FDBFF;
+  color: #0074D9;
   text-decoration: none;
   outline: 0; }
   a:hover, a:focus {
-    color: #01FF70; }
+    color: #F012BE; }
 
 ::selection {
   background: #FFF498; }
@@ -343,8 +345,14 @@ hr {
   left: 0; }
 
 body {
-  background-image: url("../img/static.jpg");
-  margin: 40px; }
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+#page-home {
+  margin: 40px;
+  display: flex; }
 
 .author {
   margin-top: 100px; }
@@ -360,12 +368,12 @@ body {
   flex-shrink: 0; }
 
 .wrapper-starter {
-  width: 90%;
+  width: 100%;
   max-width: 700px;
   background: white;
   padding: 40px;
   border-radius: 2px;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
   text-align: center; }
   .wrapper-starter p {
     color: #666; }
@@ -376,7 +384,10 @@ h1 {
 h4 {
   margin-top: 100px; }
 
-button {
+.button {
   margin-top: 50px;
-  border: 1px solid #7FDBFF;
-  color: #7FDBFF; }
+  border: 2px solid #0074D9;
+  color: #0074D9; }
+
+.flex-video {
+  border: 1px solid black; }
