@@ -12,7 +12,7 @@ This project have some requeriments you need to meet in order to compile it. Fir
 ```
 npm install -g gulp
 ```
-Gulp is the one that will run all the compilation, watchers and others tasks.
+Gulp is the one that will run all the compilation, watchers and others tasks. To learn more about Gulp and all it's magical abilities check out there website [here.](https://gulpjs.com/)
 
 ***
 
