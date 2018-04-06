@@ -35,6 +35,7 @@ var styleSrc = 'source/sass/**/*.sass',
 // Compiles all SASS files
 gulp.task('sass', function() {
     gulp.src('source/sass/**/*.sass')
+      .pipe(sourcemaps.init())
         .pipe(sass({
             style: 'compressed'
         }))
@@ -42,6 +43,7 @@ gulp.task('sass', function() {
             basename: 'main',
             suffix: '.min'
           }))
+          .pipe(sourcemaps.write())
         .pipe(gulp.dest('build/assets/css'));
 });
 
@@ -79,7 +81,7 @@ gulp.task('watch', function(){
 
     // Serve files from the root of this project
     browserSync.init({
-        server: { 
+        server: {
             baseDir: "./build"
         },
         notify: false
