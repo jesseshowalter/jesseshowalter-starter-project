@@ -1,29 +1,53 @@
+// Gulp loader
+
+const {
+    src,
+    dest,
+    task,
+    watch,
+    series,
+    parallel
+} = require('gulp');
+
 // --------------------------------------------
 // Dependencies
 // --------------------------------------------
-var autoprefixer = require('gulp-autoprefixer'),
-    concat = require('gulp-concat'),
-    del = require('del'),
-    gulp = require('gulp'),
-    minifycss = require('gulp-minify-css'),
-    plumber = require('gulp-plumber'),
-    sass = require('gulp-sass'),
-    sourcemaps = require('gulp-sourcemaps'),
-    rename = require('gulp-rename'),
-    uglify = require('gulp-uglify'),
-    images = require('gulp-imagemin'),
-    browserSync = require('browser-sync').create();
+
+// CSS / SASS plugins
+let sass = require('gulp-sass');
+let autoprefixer = require('gulp-autoprefixer');
+let minifycss = require('gulp-clean-css');
+
+// JSS / plugins
+let uglify = require('gulp-uglify');
+
+// Utility plugins
+let concat = require('gulp-concat');
+let del = require('del');
+let plumber = require('gulp-plumber');
+let sourcemaps = require('gulp-sourcemaps');
+let rename = require('gulp-rename');
+
+// Browser plugins
+let browserSync = require('browser-sync').create();
+
+// Images plugins
+let images = require('gulp-imagemin');
 
 
-// paths
-var styleSrc = 'source/sass/**/*.sass',
-    styleDest = 'build/assets/css/',
-    htmlSrc = 'source/',
-    htmlDest = 'build/',
-    vendorSrc = 'source/js/vendors/',
-    vendorDest = 'build/assets/js/',
-    scriptSrc = 'source/js/*.js',
-    scriptDest = 'build/assets/js/';
+// Project Variables
+
+let styleSrc = 'source/sass/**/*.sass';
+let styleDest = 'build/assets/css/';
+
+let vendorSrc = 'source/js/vendors/';
+let vendorDest = 'build/assets/js/';
+let scriptSrc = 'source/js/*.js';
+let scriptDest = 'build/assets/js/';
+
+let htmlSrc = 'source/';
+let htmlDest = 'build/';
+
 
 
 
@@ -32,9 +56,9 @@ var styleSrc = 'source/sass/**/*.sass',
 // --------------------------------------------
 
 
-// Compiles all SASS files
-gulp.task('sass', function() {
-    gulp.src('source/sass/**/*.sass')
+// Compiles SASS files
+function css(done) {
+    src('source/sass/**/*.sass')
         .pipe(plumber())
         .pipe(sass({
             style: 'compressed'
@@ -42,28 +66,33 @@ gulp.task('sass', function() {
         .pipe(rename({
             basename: 'main',
             suffix: '.min'
-          }))
+        }))
 
-        .pipe(gulp.dest('build/assets/css'));
-});
+        .pipe(dest('build/assets/css'));
+    done();
+};
 
-gulp.task('images', function() {
-    gulp.src('source/img/*')
+
+// Images
+function img(done) {
+    src('source/img/*')
         .pipe(images())
-        .pipe(gulp.dest('build/assets/img'));
-});
+        .pipe(dest('build/assets/img'));
+    done();
+};
 
 // Uglify js files
-gulp.task('scripts', function() {
-    gulp.src('source/js/*.js')
+function js(done) {
+    src('source/js/*.js')
         .pipe(plumber())
         .pipe(uglify())
-        .pipe(gulp.dest('build/assets/js'));
-});
+        .pipe(dest('build/assets/js'));
+    done();
+};
 
 //Concat and Compress Vendor .js files
-gulp.task('vendors', function() {
-    gulp.src(
+function vendor(done) {
+    src(
             [
                 'source/js/vendors/jquery.min.js',
                 'source/js/vendors/*.js'
@@ -71,13 +100,15 @@ gulp.task('vendors', function() {
         .pipe(plumber())
         .pipe(concat('vendors.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('build/assets/js'));
-});
+        .pipe(dest('build/assets/js'));
+    done();
+};
 
 
 
 // Watch for changes
-gulp.task('watch', function(){
+
+function watcher() {
 
     // Serve files from the root of this project
     browserSync.init({
@@ -87,13 +118,15 @@ gulp.task('watch', function(){
         notify: false
     });
 
-    gulp.watch(styleSrc,['sass']);
-    gulp.watch(scriptSrc,['scripts']);
-    gulp.watch(vendorSrc,['vendors']);
-    gulp.watch(['build/*.html', 'build/assets/css/*.css', 'build/assets/js/*.js', 'build/assets/js/vendors/*.js']).on('change', browserSync.reload);
+    watch(styleSrc, series(css));
+    watch(scriptSrc, series(js));
+    watch(vendorSrc, series(vendor));
+    watch(['build/*.html', 'build/assets/css/*.css', 'build/assets/js/*.js', 'build/assets/js/vendors/*.js']).on('change', browserSync.reload);
 
-});
+};
 
 
 // use default task to launch Browsersync and watch JS files
-gulp.task('default', [ 'sass', 'scripts', 'vendors', 'watch'], function () {});
+let build = parallel(watcher);
+task('default', build);
+task('img', img);
