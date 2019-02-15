@@ -6,7 +6,7 @@ Check out [The YouTube series to see my process](https://www.youtube.com/watch?v
 
 ***
 
-## Requeriments
+## Requirements
 This project have some requeriments you need to meet in order to compile it. First of all, you need NodeJS in order to run javascript on the console, you can go to the [NodeJS](http://nodejs.org) site and follow trough the installation process. After you get the `node` command on the console you will have the node package manager `npm` as well. Now you need to install Gulp with the following command.
 
 ```
